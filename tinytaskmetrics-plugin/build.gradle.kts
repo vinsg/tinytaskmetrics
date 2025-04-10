@@ -15,7 +15,6 @@ dependencies {
 }
 
 gradlePlugin {
-    // Define the plugins
     website.set("https://github.com/vinsg/tinytaskmetrics")
     vcsUrl.set("https://github.com/vinsg/tinytaskmetrics.git")
 

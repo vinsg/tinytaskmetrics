@@ -61,17 +61,12 @@ abstract class SystemInfoService : BuildService<BuildServiceParameters.None> {
      * Lazily retrieves the total physical RAM of the system in MB.
      */
     private fun fetchTotalPhysicalRam(): Long {
-        // Add logging for debugging if needed: println("Fetching total physical RAM...")
         return try {
-            // Try using OperatingSystemMXBean first
             val osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
-            // Check if the method exists and the value is reasonable (some JVMs might return 0 or negative)
-            val memFromBean = osBean.totalMemorySize // Changed from totalPhysicalMemorySize
+            val memFromBean = osBean.totalMemorySize
             if (memFromBean > 0) {
                 return memFromBean / (1024 * 1024) // Convert to MB
             }
-
-            // Fallback methods if bean didn't work
             when {
                 osName.startsWith("Windows", ignoreCase = true) -> {
                     val output = executeCommand(listOf("wmic", "ComputerSystem", "get", "TotalPhysicalMemory"))
@@ -109,7 +104,6 @@ abstract class SystemInfoService : BuildService<BuildServiceParameters.None> {
             reader.close()
             if (exitCode == 0 && output.isNotEmpty()) output else null
         } catch (e: IOException) {
-            // Log error if necessary, e.g., command not found
             System.err.println("Failed to execute command '${command.joinToString(" ")}': ${e.message}")
             null
         } catch (e: InterruptedException) {

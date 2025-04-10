@@ -81,20 +81,18 @@ abstract class TinyTaskMetricsTrackerService : BuildService<TinyTaskMetricsTrack
         val totalBuildTime = System.currentTimeMillis() - buildStartTime
         val systemInfo = parameters.systemInfoService.get() // Access system info lazily HERE
 
-        // Convert collected data
         val taskData = convertToTaskData()
 
-        // Get configuration from parameters
         val outputDir = parameters.outputDirectory.get().asFile
         val doExportTxt = parameters.exportTxt.getOrElse(false)
         val csvFile = outputDir.resolve(parameters.csvFileName.get())
         val txtFile = outputDir.resolve(parameters.txtFileName.get())
 
-        outputDir.mkdirs() // Ensure directory exists
+        outputDir.mkdirs()
 
-        // --- Reporting Logic (moved from ReportGenerator to simplify) ---
+        // --- Reporting Logic  ---
 
-        // Print Summary to Console
+        // Print Summary to stdout
         printSummaryInternal(taskData, totalBuildTime, systemInfo)
 
         // Save Summary to CSV
@@ -116,8 +114,6 @@ abstract class TinyTaskMetricsTrackerService : BuildService<TinyTaskMetricsTrack
             )
         }
     }
-
-    // --- Internal Reporting Methods ---
 
     private fun printSummaryInternal(
         taskData: Map<String, TaskData>,

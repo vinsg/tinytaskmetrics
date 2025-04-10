@@ -88,5 +88,8 @@ The plugin generates report files in the `build/reports/` directory of **each pr
 
 ## Roadmap
 
--   [ ] Add HTML report option
--   [ ] Add more comprehensive functional tests
+- [ ] Create CI for build and release.
+- [ ] Automate Gradle Portal publishing.
+- [ ] Add a minimal HTML report option
+- [ ] Add the ability to pass the task we want to watch.
+- [ ] Add more comprehensive functional tests

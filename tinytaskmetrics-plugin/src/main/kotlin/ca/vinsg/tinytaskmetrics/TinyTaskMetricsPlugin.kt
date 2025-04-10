@@ -25,8 +25,6 @@ abstract class TinyTaskMetricsPlugin @Inject constructor(
                 "[TinyTaskMetrics] Plugin should ideally be applied only to the root project " +
                         "in settings.gradle.kts or the root build.gradle.kts."
             )
-            // Optionally, still configure if applied to subproject, but services will be shared anyway
-            // configurePluginForBuild(project.rootProject) // Or configure based on root project context
         }
     }
 
@@ -51,13 +49,11 @@ abstract class TinyTaskMetricsPlugin @Inject constructor(
                             p.pluginManager.hasPlugin("com.android.dynamic-feature") ||
                             p.pluginManager.hasPlugin("com.android.test") ||
                             p.pluginManager.hasPlugin("com.android.asset-pack")
-                    // Add other relevant Android plugin IDs if needed
                 }
-                .map { it.path } // Get the project path (e.g., ":app", ":feature:login")
+                .map { it.path }
                 .toSet()
         }
 
-        // Default output directory provider
         val defaultOutputDirProvider = rootProject.layout.buildDirectory.dir("reports")
 
         // Register TinyTaskMetricsTrackerService once for the build
@@ -74,7 +70,6 @@ abstract class TinyTaskMetricsPlugin @Inject constructor(
                 spec.parameters.txtFileName.set(extension.txtFileName)
             }
 
-        // listen for task completion events.
         listenerRegistry.onTaskCompletion(tinyTaskMetricsTrackerProvider)
 
         rootProject.logger.lifecycle("[TinyTaskMetrics] Plugin applied and services registered.")
