@@ -58,3 +58,6 @@ local.properties
 
 # Kotlin
 .kotlin
+
+# env
+*.env
